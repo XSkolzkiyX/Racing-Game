@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        targetPosition = cameraPositions[0];
     }
 
     private void FixedUpdate()
@@ -35,8 +36,11 @@ public class CameraController : MonoBehaviour
         mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, Mathf.Clamp(size + target.velocity.magnitude * smoothZoomPower, size, size + sizeDelta), smoothZoomSpeed);
     }
 
-    public void EnterDriftMode(Directions direction)
+    public void EnterDriftMode(float velocityX)
     {
-       //targetPosition = cameraPositions[direction];
+        byte index = 0;
+        if(velocityX > 2.5f) index = 1;
+        else if(velocityX < -2.5f) index = 2;
+        targetPosition = cameraPositions[index];
     }
 }
