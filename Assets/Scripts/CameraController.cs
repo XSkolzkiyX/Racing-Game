@@ -36,7 +36,7 @@ public class CameraController : MonoBehaviour
         mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, Mathf.Clamp(size + target.velocity.magnitude * smoothZoomPower, size, size + sizeDelta), smoothZoomSpeed);
     }
 
-    public void EnterDriftMode(float velocityX)
+    public void ChangeCameraAngle(float velocityX)
     {
         byte index = 0;
         if(velocityX > 2.5f) index = 1;

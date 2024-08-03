@@ -243,7 +243,7 @@ public class CarController : MonoBehaviour
         }
         else isDrifting = false;
         DriftCarPS();
-        mainCamera.EnterDriftMode(localVelocityX);
+        mainCamera.ChangeCameraAngle(localVelocityX);
     }
 
     public void GoForward()
