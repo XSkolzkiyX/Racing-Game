@@ -16,6 +16,10 @@ public class LevelController : MonoBehaviour
 
     void Start()
     {
+        SaveValues saveData = SaveLoadManager.Load();
+        player.data = saveData.ownedVehicles[saveData.selectedVehicleIndex];
+        coins = saveData.coins;
+
         coinText.text = coins.ToString();
         Time.timeScale = 1;
         Cursor.visible = false;

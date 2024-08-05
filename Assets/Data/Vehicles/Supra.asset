@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097ca0c8f16c71b40a14461d9f4f5eea, type: 3}
+  m_Name: Supra
+  m_EditorClassIdentifier: 
+  model: {fileID: 4110877379436084381, guid: b665e869c1f52ca4c856a67b73c11cd2, type: 3}
+  price: 20
+  maxSpeed: 140
+  maxReverseSpeed: 50
+  accelerationMultiplier: 10
+  maxSteeringAngle: 40
+  steeringSpeed: 0.5
+  brakeForce: 200
+  decelerationMultiplier: 2
+  handbrakeDriftMultiplier: 6
+  bodyMassCenter: {x: 0, y: 0, z: 0}

@@ -1,28 +1,11 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    [Header("Stats")]
-    [Range(20, 190)]
-    public int maxSpeed = 90;
-    [Range(10, 120)]
-    public int maxReverseSpeed = 45; 
-    [Range(1, 10)]
-    public int accelerationMultiplier = 2; 
-    [Range(10, 45)]
-    public int maxSteeringAngle = 27; 
-    [Range(0.1f, 1f)]
-    public float steeringSpeed = 0.5f; 
-    [Range(100, 600)]
-    public int brakeForce = 350; 
-    [Range(1, 10)]
-    public int decelerationMultiplier = 2; 
-    [Range(1, 10)]
-    public int handbrakeDriftMultiplier = 5; 
-
-    public Vector3 bodyMassCenter;
+    public VehicleData data;
 
     [Header("Camera")]
     [SerializeField] private CameraController mainCamera;
@@ -82,7 +65,8 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         carRigidbody = GetComponent<Rigidbody>();
-        carRigidbody.centerOfMass = bodyMassCenter;
+        carRigidbody.centerOfMass = data.bodyMassCenter;
+
         #region WheelsFriction
         FLwheelFriction = new WheelFrictionCurve()
         {
@@ -182,39 +166,39 @@ public class CarController : MonoBehaviour
 
     public void TurnLeft()
     {
-        steeringAxis -= Time.deltaTime * 10f * steeringSpeed;
+        steeringAxis -= Time.deltaTime * 10f * data.steeringSpeed;
         if (steeringAxis < -1f) steeringAxis = -1f;
-        float steeringAngle = steeringAxis * maxSteeringAngle;
-        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
-        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
+        float steeringAngle = steeringAxis * data.maxSteeringAngle;
+        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, data.steeringSpeed);
+        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, data.steeringSpeed);
     }
 
     public void TurnRight()
     {
-        steeringAxis += Time.deltaTime * 10f * steeringSpeed;
+        steeringAxis += Time.deltaTime * 10f * data.steeringSpeed;
         if (steeringAxis > 1f) steeringAxis = 1f;
-        float steeringAngle = steeringAxis * maxSteeringAngle;
-        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
-        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
+        float steeringAngle = steeringAxis * data.maxSteeringAngle;
+        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, data.steeringSpeed);
+        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, data.steeringSpeed);
     }
 
     public void ResetSteeringAngle()
     {
         if (steeringAxis < 0f)
         {
-            steeringAxis = steeringAxis + (Time.deltaTime * 10f * steeringSpeed);
+            steeringAxis += Time.deltaTime * 10f * data.steeringSpeed;
         }
         else if (steeringAxis > 0f)
         {
-            steeringAxis = steeringAxis - (Time.deltaTime * 10f * steeringSpeed);
+            steeringAxis -= Time.deltaTime * 10f * data.steeringSpeed;
         }
         if (Mathf.Abs(frontLeftCollider.steerAngle) < 1f)
         {
             steeringAxis = 0f;
         }
-        float steeringAngle = steeringAxis * maxSteeringAngle;
-        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
-        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
+        float steeringAngle = steeringAxis * data.maxSteeringAngle;
+        frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, data.steeringSpeed);
+        frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, data.steeringSpeed);
     }
 
     private void AnimateWheelMeshes()
@@ -254,16 +238,16 @@ public class CarController : MonoBehaviour
         if (localVelocityZ < -1f) Brakes();
         else
         {
-            if (Mathf.RoundToInt(carSpeed) < maxSpeed)
+            if (Mathf.RoundToInt(carSpeed) < data.maxSpeed)
             {
                 frontLeftCollider.brakeTorque = 0;
-                frontLeftCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                frontLeftCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
                 frontRightCollider.brakeTorque = 0;
-                frontRightCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                frontRightCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
                 rearLeftCollider.brakeTorque = 0;
-                rearLeftCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                rearLeftCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
                 rearRightCollider.brakeTorque = 0;
-                rearRightCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                rearRightCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
             }
             else
             {
@@ -283,16 +267,16 @@ public class CarController : MonoBehaviour
         if (localVelocityZ > 1f) Brakes();
         else
         {
-            if (Mathf.Abs(Mathf.RoundToInt(carSpeed)) < maxReverseSpeed)
+            if (Mathf.Abs(Mathf.RoundToInt(carSpeed)) < data.maxReverseSpeed)
             {
                 frontLeftCollider.brakeTorque = 0;
-                frontLeftCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                frontLeftCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
                 frontRightCollider.brakeTorque = 0;
-                frontRightCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                frontRightCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
                 rearLeftCollider.brakeTorque = 0;
-                rearLeftCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                rearLeftCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
                 rearRightCollider.brakeTorque = 0;
-                rearRightCollider.motorTorque = (accelerationMultiplier * 50f) * throttleAxis;
+                rearRightCollider.motorTorque = (data.accelerationMultiplier * 50f) * throttleAxis;
             }
             else
             {
@@ -330,7 +314,7 @@ public class CarController : MonoBehaviour
                 throttleAxis = 0f;
             }
         }
-        carRigidbody.velocity = carRigidbody.velocity * (1f / (1f + (0.025f * decelerationMultiplier)));
+        carRigidbody.velocity = carRigidbody.velocity * (1f / (1f + (0.025f * data.decelerationMultiplier)));
         frontLeftCollider.motorTorque = 0;
         frontRightCollider.motorTorque = 0;
         rearLeftCollider.motorTorque = 0;
@@ -344,34 +328,34 @@ public class CarController : MonoBehaviour
 
     public void Brakes()
     {
-        frontLeftCollider.brakeTorque = brakeForce;
-        frontRightCollider.brakeTorque = brakeForce;
-        rearLeftCollider.brakeTorque = brakeForce;
-        rearRightCollider.brakeTorque = brakeForce;
+        frontLeftCollider.brakeTorque = data.brakeForce;
+        frontRightCollider.brakeTorque = data.brakeForce;
+        rearLeftCollider.brakeTorque = data.brakeForce;
+        rearRightCollider.brakeTorque = data.brakeForce;
     }
 
     public void Handbrake()
     {
         CancelInvoke(nameof(RecoverTraction));
         driftingAxis = driftingAxis + (Time.deltaTime);
-        float secureStartingPoint = driftingAxis * FLWextremumSlip * handbrakeDriftMultiplier;
+        float secureStartingPoint = driftingAxis * FLWextremumSlip * data.handbrakeDriftMultiplier;
 
-        if (secureStartingPoint < FLWextremumSlip) driftingAxis = FLWextremumSlip / (FLWextremumSlip * handbrakeDriftMultiplier);
+        if (secureStartingPoint < FLWextremumSlip) driftingAxis = FLWextremumSlip / (FLWextremumSlip * data.handbrakeDriftMultiplier);
         if (driftingAxis > 1f) driftingAxis = 1f;
         if (Mathf.Abs(localVelocityX) > 2.5f) isDrifting = true;
         else isDrifting = false;
         if (driftingAxis < 1f)
         {
-            FLwheelFriction.extremumSlip = FLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            FLwheelFriction.extremumSlip = FLWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             frontLeftCollider.sidewaysFriction = FLwheelFriction;
 
-            FRwheelFriction.extremumSlip = FRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            FRwheelFriction.extremumSlip = FRWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             frontRightCollider.sidewaysFriction = FRwheelFriction;
 
-            RLwheelFriction.extremumSlip = RLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            RLwheelFriction.extremumSlip = RLWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             rearLeftCollider.sidewaysFriction = RLwheelFriction;
 
-            RRwheelFriction.extremumSlip = RRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            RRwheelFriction.extremumSlip = RRWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             rearRightCollider.sidewaysFriction = RRwheelFriction;
         }
 
@@ -412,16 +396,16 @@ public class CarController : MonoBehaviour
 
         if (FLwheelFriction.extremumSlip > FLWextremumSlip)
         {
-            FLwheelFriction.extremumSlip = FLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            FLwheelFriction.extremumSlip = FLWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             frontLeftCollider.sidewaysFriction = FLwheelFriction;
 
-            FRwheelFriction.extremumSlip = FRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            FRwheelFriction.extremumSlip = FRWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             frontRightCollider.sidewaysFriction = FRwheelFriction;
 
-            RLwheelFriction.extremumSlip = RLWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            RLwheelFriction.extremumSlip = RLWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             rearLeftCollider.sidewaysFriction = RLwheelFriction;
 
-            RRwheelFriction.extremumSlip = RRWextremumSlip * handbrakeDriftMultiplier * driftingAxis;
+            RRwheelFriction.extremumSlip = RRWextremumSlip * data.handbrakeDriftMultiplier * driftingAxis;
             rearRightCollider.sidewaysFriction = RRwheelFriction;
 
             Invoke(nameof(RecoverTraction), Time.deltaTime);
