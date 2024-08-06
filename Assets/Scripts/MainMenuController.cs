@@ -42,11 +42,9 @@ public class MainMenuController : MonoBehaviour
                 ownedVehicles = ownedVehicles,
                 selectedVehicleIndex = selectedVehicleIndex
             });
-            Debug.Log("Initial Save");
         }
         else
         {
-            Debug.Log("Get Values");
             coins = data.coins;
             ownedVehicles = data.ownedVehicles;
             selectedVehicleIndex = data.selectedVehicleIndex;

@@ -1,9 +1,12 @@
+using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
+    public bool isOnline;
     public int timerValue;
     [SerializeField] private CarController player;
     
@@ -12,13 +15,17 @@ public class LevelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI rewardText;
     [SerializeField] private TextMeshProUGUI coinText;
+
+    private SaveValues saveData;
     private int coins = 0;
 
-    void Start()
+    [PunRPC]
+    private void Start()
     {
-        SaveValues saveData = SaveLoadManager.Load();
-        player.data = saveData.ownedVehicles[saveData.selectedVehicleIndex];
+        saveData = SaveLoadManager.Load();
         coins = saveData.coins;
+        if(isOnline) player = PhotonNetwork.Instantiate(saveData.ownedVehicles[saveData.selectedVehicleIndex].model.name, Vector3.zero, Quaternion.identity, 0).GetComponent<CarController>();
+        player.data = saveData.ownedVehicles[saveData.selectedVehicleIndex];
 
         coinText.text = coins.ToString();
         Time.timeScale = 1;
@@ -46,10 +53,13 @@ public class LevelController : MonoBehaviour
         coins += player.driftScore / 100;
         rewardText.text = coins.ToString();
         gameOverPanel.SetActive(true);
+        saveData.coins = coins;
+        SaveLoadManager.Save(saveData);
     }
 
     public void OnBackToMenuButtonClick()
     {
+        if (isOnline) PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene(0);
     }
 }

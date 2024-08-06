@@ -9,7 +9,19 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 64f6bb288ba6201479b861dc94f3dd33
   - enabled: 1
-    path: Assets/Scenes/Game.unity
+    path: Assets/Scenes/OnlineMenu.unity
+    guid: 44f49677238bb8b4ebeaa9fa759a2925
+  - enabled: 1
+    path: Assets/Scenes/Level 1.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Level 2.unity
+    guid: 7264e13f961834746abfd8e747301a6e
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: bda8dbee46c31a64a9f272a7d9317cc2
+  - enabled: 1
+    path: Assets/Scenes/OnlineLevel.unity
+    guid: a84cc42577631774d826130745573f16
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -105,6 +105,8 @@ public class CarController : MonoBehaviour
         };
         RRWextremumSlip = rearRightCollider.sidewaysFriction.extremumSlip;
         #endregion
+        if (!carSpeedText) carSpeedText = GameObject.Find("SpeedText").GetComponent<TextMeshProUGUI>();
+        if (!scoreText) scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         InvokeRepeating(nameof(CarSpeedUI), 0f, 0.1f);
     }
 

@@ -2,6 +2,7 @@
 using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Asteroids
@@ -51,6 +52,9 @@ namespace Photon.Pun.Demo.Asteroids
             roomListEntries = new Dictionary<string, GameObject>();
             
             PlayerNameInput.text = "Player " + Random.Range(1000, 10000);
+
+            PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(1000, 10000);
+            PhotonNetwork.ConnectUsingSettings();
         }
 
         #endregion
@@ -59,7 +63,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnConnectedToMaster()
         {
-            this.SetActivePanel(SelectionPanel.name);
+            SetActivePanel(SelectionPanel.name);
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -206,6 +210,11 @@ namespace Photon.Pun.Demo.Asteroids
 
         #region UI CALLBACKS
 
+        public void OnBackToMenuButtonClick()
+        {
+            SceneManager.LoadScene(0);
+        }
+
         public void OnBackButtonClicked()
         {
             if (PhotonNetwork.InLobby)
@@ -272,7 +281,7 @@ namespace Photon.Pun.Demo.Asteroids
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
-            PhotonNetwork.LoadLevel("DemoAsteroids-GameScene");
+            PhotonNetwork.LoadLevel("OnlineLevel");
         }
 
         #endregion
