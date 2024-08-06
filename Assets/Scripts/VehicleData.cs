@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Vehicle Data", menuName = "Data/Vehicle Data")]
 public class VehicleData : ScriptableObject
 {
+    public GameObject prefab;
     public GameObject model;
     public int price;
     

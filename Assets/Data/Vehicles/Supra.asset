@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097ca0c8f16c71b40a14461d9f4f5eea, type: 3}
   m_Name: Supra
   m_EditorClassIdentifier: 
+  prefab: {fileID: 9025034933959061037, guid: fe3f225f397a5414a91c4692cef6b274, type: 3}
   model: {fileID: 4110877379436084381, guid: b665e869c1f52ca4c856a67b73c11cd2, type: 3}
   price: 20
   maxSpeed: 140

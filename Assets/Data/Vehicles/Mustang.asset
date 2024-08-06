@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097ca0c8f16c71b40a14461d9f4f5eea, type: 3}
   m_Name: Mustang
   m_EditorClassIdentifier: 
+  prefab: {fileID: 9025034933959061037, guid: 25bf8eb4acc949c42870cb781869fa87, type: 3}
   model: {fileID: 9095014822084020272, guid: 1a41fc4d336ac3a43b93f9225cf34078, type: 3}
   price: 12
   maxSpeed: 120

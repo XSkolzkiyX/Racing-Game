@@ -24,7 +24,8 @@ public class LevelController : MonoBehaviour
     {
         saveData = SaveLoadManager.Load();
         coins = saveData.coins;
-        if(isOnline) player = PhotonNetwork.Instantiate(saveData.ownedVehicles[saveData.selectedVehicleIndex].model.name, Vector3.zero, Quaternion.identity, 0).GetComponent<CarController>();
+        if(isOnline) player = PhotonNetwork.Instantiate(saveData.ownedVehicles[saveData.selectedVehicleIndex].prefab.name, Vector3.zero, Quaternion.identity, 0).GetComponent<CarController>();
+        else player = Instantiate(saveData.ownedVehicles[saveData.selectedVehicleIndex].prefab, Vector3.zero, Quaternion.identity).GetComponent<CarController>();
         player.data = saveData.ownedVehicles[saveData.selectedVehicleIndex];
 
         coinText.text = coins.ToString();
