@@ -58,6 +58,13 @@ public class LevelController : MonoBehaviour
         SaveLoadManager.Save(saveData);
     }
 
+    public void DoubleReward()
+    {
+        coins += player.driftScore / 100;
+        rewardText.text = coins.ToString();
+        saveData.coins = coins;
+    }
+
     public void OnBackToMenuButtonClick()
     {
         if (isOnline) PhotonNetwork.LeaveRoom();

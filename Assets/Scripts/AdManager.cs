@@ -1,27 +1,61 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using IronSourceJSON;
+﻿using UnityEngine;
 
 public class AdManager : MonoBehaviour
 {
-    /*
-    private string appKey = "";
-    
-    void Start()
+    [SerializeField] private LevelController level;
+
+    private string appKey = "1f4681d85";
+
+    private void Start()
     {
         IronSource.Agent.init(appKey);
-        IronSourceEvents.onRewardedVideoAdRewardedEvent += RewardedVideoAdRewardedEvent;
-        IronSourceEvents.onRewardedVideoAdClosedEvent += RewardedVideoAdClosedEvent;
+        IronSourceRewardedVideoEvents.onAdOpenedEvent += RewardedVideoOnAdOpenedEvent;
+        IronSourceRewardedVideoEvents.onAdClosedEvent += RewardedVideoOnAdClosedEvent;
+        IronSourceRewardedVideoEvents.onAdAvailableEvent += RewardedVideoOnAdAvailable;
+        IronSourceRewardedVideoEvents.onAdUnavailableEvent += RewardedVideoOnAdUnavailable;
+        IronSourceRewardedVideoEvents.onAdShowFailedEvent += RewardedVideoOnAdShowFailedEvent;
+        IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
+        IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
+    }
+    #region Callbacks
+    private void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
+    {
+        Debug.Log("Rewarded Video Ad Available: " + adInfo);
     }
 
-    void OnDestroy()
+    private void RewardedVideoOnAdUnavailable()
     {
-        IronSourceEvents.onRewardedVideoAdRewardedEvent -= RewardedVideoAdRewardedEvent;
-        IronSourceEvents.onRewardedVideoAdClosedEvent -= RewardedVideoAdClosedEvent;
+        Debug.Log("Rewarded Video Ad Unavailable");
     }
-    
-    public void ShowRewardedAd()
+
+    private void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
+    {
+        Debug.Log("Rewarded Video Ad Opened: " + adInfo);
+    }
+
+    private void RewardedVideoOnAdClosedEvent(IronSourceAdInfo adInfo)
+    {
+        Debug.Log("Rewarded Video Ad Closed: " + adInfo);
+    }
+
+    private void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
+    {
+        Debug.Log("Rewarded Video Ad Rewarded: " + placement + ", " + adInfo);
+        level.DoubleReward();
+    }
+
+    private void RewardedVideoOnAdShowFailedEvent(IronSourceError error, IronSourceAdInfo adInfo)
+    {
+        Debug.LogError("Rewarded Video Ad Show Failed: " + error + ", " + adInfo);
+    }
+
+    private void RewardedVideoOnAdClickedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
+    {
+        Debug.Log("Rewarded Video Ad Clicked: " + placement + ", " + adInfo);
+    }
+    #endregion
+
+    private void ShowRewardedAd()
     {
         if (IronSource.Agent.isRewardedVideoAvailable())
         {
@@ -32,17 +66,9 @@ public class AdManager : MonoBehaviour
             Debug.Log("Rewarded video not available");
         }
     }
-    
-    private void RewardedVideoAdRewardedEvent(IronSourcePlacement placement)
+
+    public void OnShowAdButtonClick()
     {
-        Debug.Log("Rewarded Video Ad Rewarded");
-        int rewardAmount = placement.getRewardAmount();
-        string rewardName = placement.getRewardName();
-        Debug.Log("Reward: " + rewardAmount + " " + rewardName);
+        ShowRewardedAd();
     }
-    
-    private void RewardedVideoAdClosedEvent()
-    {
-        Debug.Log("Rewarded Video Ad Closed");
-    }*/
 }
